@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add your custom CSS styles here */
+.swiper-container {
+    width: 100%;
+    height: 400px;
+    /* Adjust the height as needed */
+}
+
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
