@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string("description");
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('seats');
             $table->date('date');
             $table->integer('price');
+            $table->string('type');
             $table->string('image',255)->nullable();
             $table->enum('status', ['pending', 'accepted','refused'])->default('pending');
             $table->timestamps();

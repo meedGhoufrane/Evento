@@ -168,4 +168,6 @@
                 target='_blank' class="hover:underline mx-1">ReadymadeUI</a>All Rights Reserved.</p>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 

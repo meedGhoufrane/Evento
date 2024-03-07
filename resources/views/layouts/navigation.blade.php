@@ -21,23 +21,23 @@
                     </x-nav-link>
                 </div>
                 @if (auth()->user()->hasRole('admin'))
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
-                        {{ __('Users') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('category')" :active="request()->routeIs('category')">
-                        {{ __('Category') }}
-                    </x-nav-link>
-                </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                            {{ __('Users') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('category')" :active="request()->routeIs('category')">
+                            {{ __('Category') }}
+                        </x-nav-link>
+                    </div>
                 @endif
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('event')" :active="request()->routeIs('event')">
+                    <x-nav-link :href="route('events')" :active="request()->routeIs('events')">
                         {{ __('Event') }}
                     </x-nav-link>
                 </div>
-              
+
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

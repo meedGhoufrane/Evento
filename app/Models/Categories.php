@@ -10,6 +10,10 @@ class Categories extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'name'
     ];
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 }

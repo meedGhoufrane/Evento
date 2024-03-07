@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\WelcomeController;
 
 
 
@@ -19,9 +21,9 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+ 
+
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
 
 
@@ -50,9 +52,6 @@ Route::get('/register', function () {
 })->name('register');
 
 
-Route::get('/event', function () {
-    return view('admin.events/event');
-})->name('event');
 
 Route::get('/create', function () {
     return view('admin.users.create');
@@ -67,9 +66,7 @@ Route::get('/category', function () {
     return view('admin.category.index');
 })->name('category');
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+
 
 Route::get('admin/users', [UserController::class, 'index'])->name('admin.users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -91,7 +88,43 @@ Route::delete('/admin/category/{category}', [CategoryController::class, 'destroy
 
 Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category.index');
 
+
+
+Route::resource("events", EventController::class, [
+    'names' => [
+        'index' => 'events'
+    ]
+]);
+// Route::middleware(['auth'])->group(function () {
+//     // Index page for events
+//     Route::get('/events', [EventController::class, 'index'])->name('events');
+    
+//     // Show all events
+//     Route::get('/events/all', [EventController::class, 'allEvents'])->name('events.all');
+
+//     // Show specific event
+//     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+
+//     // Create new event
+//     Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+//     Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
+//     // Edit event
+//     Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
+//     Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
+
+//     // Change event status
+//     Route::put('/events/{event}/status', [EventController::class, 'changeStatus'])->name('events.changeStatus');
+
+//     // Delete event
+//     Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+
+//     // Archive events
+//     Route::get('/events/archive', [EventController::class, 'archive'])->name('events.archive');
+// });
+
 // statistic
+
 
 
 

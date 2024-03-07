@@ -17,19 +17,18 @@ class EventController extends Controller
     public function index()
     {
         $events = auth()->user()->events()->with('Categories')->latest()->paginate(5);
-
         $categories = Categories::all();
-
-        return view('events.index', compact('events', 'categories'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+    
+        return view('admin.events.index', compact('events', 'categories'));
     }
+    
 
     public function allEvents()
     {
         $events = Event::latest()->paginate(5);
-        $categories = Categories::all();
+        $categories = Categories::all();    
         $users = User::all();
-        // dd($users);
+        // dd($events);
         return view('events.AllEvents', compact('events', 'categories', 'users'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -52,7 +51,7 @@ class EventController extends Controller
     public function create()
     {
         $categories = Categories::all();
-        return view('events.create', compact('categories'))
+        return view('admin.events.create', compact('categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -61,6 +60,8 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
+         
+
         $imageFileName = null;
 
         if ($request->hasFile('image')) {
@@ -71,24 +72,25 @@ class EventController extends Controller
         }
 
         $event = Event::create([
-            'name' => $request->name,
+            'title' => $request->title,
             'description' => $request->description,
             'location' => $request->location,
             'seats' => $request->seats,
             'price' => $request->price,
             'date' => $request->date,
             'type' => $request->type,
-            'Categories_id' => $request->Categories,
+            'category_id' => $request->category_id, // Make sure this matches your form field name
             'image' => $imageFileName,
             'created_by' => auth()->id(),
         ]);
+        
+        
+        // if ($request->type === 'automatic') {
+        //     $event->reservations()->update(['status' => 'accepted']);
+        // } else {
 
-        if ($request->type === 'automatic') {
-            $event->reservations()->update(['status' => 'accepted']);
-        } else {
-            
-            $event->reservations()->update(['status' => 'pending']);
-        }
+        //     $event->reservations()->update(['status' => 'pending']);
+        // }
 
 
         return redirect()->route('events')->with('success', 'Event created successfully.');
@@ -109,7 +111,7 @@ class EventController extends Controller
 
         $categories = Categories::all();
 
-        return view('events.show', compact('event', 'categories'));
+        return view('admin.events.show', compact('event', 'categories'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -119,7 +121,7 @@ class EventController extends Controller
 
         $categories = Categories::all();
 
-        return view('events.edit', compact('event', 'categories'))
+        return view('admin.events.edit', compact('event', 'categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -128,9 +130,12 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
+         
+
+
 
         $data = [
-            'name' => $request->name,
+            'title' => $request->title,
             'description' => $request->description,
             'location' => $request->location,
             'seats' => $request->seats,
@@ -150,12 +155,12 @@ class EventController extends Controller
             $data['image'] = $fileName;
         }
 
-        if ($request->type === 'automatic') {
-            $event->reservations()->update(['status' => 'accepted']);
-        } else {
+        // if ($request->type === 'automatic') {
+        //     $event->reservations()->update(['status' => 'accepted']);
+        // } else {
             
-            $event->reservations()->update(['status' => 'pending']);
-        }
+        //     $event->reservations()->update(['status' => 'pending']);
+        // }
 
         $event->update($data);
 
@@ -183,7 +188,7 @@ class EventController extends Controller
             ->paginate(5);
         $categories = Categories::all();
 
-        return view('events.archive', compact('events', 'categories'))
+        return view('admin.events.archive', compact('events', 'categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
