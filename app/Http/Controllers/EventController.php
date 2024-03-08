@@ -16,7 +16,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = auth()->user()->events()->with('Categories')->latest()->paginate(5);
+        $events = auth()->user()->events()->with('Categories')->latest()->paginate(6);
         $categories = Categories::all();
     
         return view('admin.events.index', compact('events', 'categories'));
@@ -29,18 +29,18 @@ class EventController extends Controller
         $categories = Categories::all();    
         $users = User::all();
         // dd($events);
-        return view('events.AllEvents', compact('events', 'categories', 'users'))
+        return view('admin.events.AllEvents', compact('events', 'categories', 'users'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
-    public function changeStatus(Request $request, Event $event)
+    public function updateStatus(Request $request, string $id)
     {
-        
-        $status = $request->validate([
-            'status' => ['required', 'in:pending,accepted,refused'],
-        ]);
-
-        $event->update(['status' => $status['status']]);
+        // dd($request);
+        // $status = $request->validate([
+        //     'status' => ['required', 'in:pending,accepted,refused'],
+        // ]);
+            $event = Event::findOrFail($id);
+        $event->update(['status' => $request->status]);
     
         return redirect()->back()->with('success', 'Status updated successfully');
     }

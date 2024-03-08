@@ -126,6 +126,10 @@ Route::resource("events", EventController::class, [
 // statistic
 
 
+Route::get('/admin/allevents', [EventController::class, 'allEvents'])->name('events.all');
+
+// Route for updating event status
+Route::put('admin/events/{id}/updateStatus', [EventController::class, 'updateStatus'])->name('events.updateStatus');
 
 
 require __DIR__.'/auth.php';

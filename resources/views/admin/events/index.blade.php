@@ -44,14 +44,14 @@
                             href="{{ route('events.create') }}">Create Event</a>
                     </div>
                 </div>
-
+{{-- 
                 <div class="col-lg-12 margin-tb w-40">
                     <div class="pull-right">
                         <a class="block text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-400 dark:hover:bg-yellow-500 dark:focus:ring-yellow-700"
                             href="">Archived Events</a>
-                        {{-- {{ route('events.archive') }} --}}
+                        {{ route('events.archive') }}
                     </div>
-                </div>
+                </div> --}}
 
             </div>
             @if ($events->count() > 0)

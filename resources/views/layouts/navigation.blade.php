@@ -31,12 +31,21 @@
                             {{ __('Category') }}
                         </x-nav-link>
                     </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('events.all')" :active="request()->routeIs('events.all')">
+                            {{ __('AllEvent') }}
+                        </x-nav-link>
+                    </div>
                 @endif
+                @if (auth()->user()->hasRole('organizer'))
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('events')" :active="request()->routeIs('events')">
                         {{ __('Event') }}
                     </x-nav-link>
                 </div>
+                @endif
+
 
             </div>
             <!-- Settings Dropdown -->

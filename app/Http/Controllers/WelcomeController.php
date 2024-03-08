@@ -15,7 +15,7 @@ class WelcomeController extends Controller
     public function index()
     {
         // Retrieve all events from the database
-        $events = Event::paginate(6);
+        $events = Event::where('status', 'accepted')->paginate(6);
         
  
 

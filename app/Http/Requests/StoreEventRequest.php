@@ -26,15 +26,19 @@ class StoreEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'location' => 'required',
-            'seats' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'date' => 'required|date',
-            'type' => 'required|in:automatic,manual',
-            'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust image validation rules as needed
+            'title.required' => 'The event title is required.',
+            'image.required' => 'The event image is required.',
+            'image.image' => 'The event image must be an image file.',
+            'description.required' => 'The event description is required.',
+            'date.required' => 'The event date is required.',
+            'date.date' => 'The event date is not a valid date.',
+            'date.after_or_equal' => 'The event date must be today or a future date.',
+            'location.required' => 'The event location is required.',
+            'capacity.required' => 'The event capacity is required.',
+            'capacity.integer' => 'The event capacity must be an integer.',
+            'capacity.min' => 'The event capacity must be at least 1.',
+            'category_id.required' => 'The event category is required.',
+            'category_id.exists' => 'The selected event category is invalid.',
         ];
     }
 }
