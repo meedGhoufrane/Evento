@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="flex items-center justify-center h-screen bg-gray-900">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 w-96">
+    <div class="flex items-center justify-center h-screen bg-gray-900 ">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-20 w-100">
             <!-- Your form for creating an event goes here -->
             @if ($errors->any())
 
@@ -32,40 +32,43 @@
             @endif
             <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="mb-6">
-                    <label for="title"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
-                    <input type="text" name="title" id="title"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
-                        required>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class=" mb-6">
+                        <label for="title"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+                        <input type="text" name="title" id="title"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="price"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
+                        <input type="number" name="price" id="price"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="location"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
+                        <input type="text" name="location" id="location"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="seats"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Seats</label>
+                        <input type="number" name="seats" id="seats"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
+                            required>
+                    </div>
                 </div>
+                <!-- Include other fields in similar grid layout -->
                 <div class="mb-6">
                     <label for="description"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
                     <textarea name="description" id="description" rows="3"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
                         required></textarea>
-                </div>
-                <div class="mb-6">
-                    <label for="location"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
-                    <input type="text" name="location" id="location"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
-                        required>
-                </div>
-                <div class="mb-6">
-                    <label for="seats"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Seats</label>
-                    <input type="number" name="seats" id="seats"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
-                        required>
-                </div>
-                <div class="mb-6">
-                    <label for="price"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
-                    <input type="number" name="price" id="price"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
-                        required>
                 </div>
                 <div class="mb-6">
                     <label for="date"
@@ -75,7 +78,8 @@
                         required>
                 </div>
                 <div class="mb-6">
-                    <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300"> </label>
+                    <label for="type"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
                     <select name="type" id="type"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-600 dark:focus:border-blue-600"
                         required>

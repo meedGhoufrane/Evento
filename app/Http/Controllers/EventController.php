@@ -6,6 +6,7 @@ use App\Models\Categories;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -190,6 +191,26 @@ class EventController extends Controller
 
         return view('admin.events.archive', compact('events', 'categories'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function reservEvent(Request $request){
+
+        $user_id = auth()->user()->id;
+        $event_id = $request->event_id;
+        $type = Event::find($event_id)->type;
+
+        Reservation::create([
+            'user_id' => $user_id,
+            'event_id' => $event_id,
+            'status' => $type === 'automatic' ? 'approved' : 'pending'
+        ]);
+
+        $message = $type === 'automatic' ? 'reservation is successfully' : 'wait for organazer to accepted';
+        return redirect()->route('events')->with('success',$message );
+
+
+        
+
     }
 
 }

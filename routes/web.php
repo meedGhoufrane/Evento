@@ -132,5 +132,20 @@ Route::get('/admin/allevents', [EventController::class, 'allEvents'])->name('eve
 Route::put('admin/events/{id}/updateStatus', [EventController::class, 'updateStatus'])->name('events.updateStatus');
 
 
+
+
+// Route for searching events by category
+Route::get('/searchByCategory', [WelcomeController::class, 'searchByCategory'])->name('searchByCategory');
+Route::get('/search', [WelcomeController::class, 'searchByTitle'])->name('searchByTitle');
+
+
+Route::post('/event/reserve', [EventController::class, 'reservEvent'])->name('reservEvent');
+
+
+
+
+Route::get('/events/{id}', [WelcomeController::class, 'show'])->name('events.show');
+
+
 require __DIR__.'/auth.php';
  
