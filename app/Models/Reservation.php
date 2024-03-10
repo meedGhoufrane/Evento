@@ -12,8 +12,6 @@ class Reservation extends Model
     public $timestamps = false;
     public $table = 'reservation';
     
-
-    
     protected $fillable = [
         'user_id',
         'event_id',
