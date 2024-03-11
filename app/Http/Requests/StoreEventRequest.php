@@ -36,7 +36,6 @@ class StoreEventRequest extends FormRequest
             'image' => 'nullable|string|max:255',
             'status' => 'nullable|string|in:pending,accepted,refused',
             'category_id' => 'required|exists:categories,id',
-            'created_by' => 'required|exists:users,id',
         ];
     }
 }

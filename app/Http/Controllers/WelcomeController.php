@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Categories; 
+use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WelcomeController extends Controller
 {
@@ -17,7 +19,7 @@ class WelcomeController extends Controller
     {
         // Retrieve all events from the database
         $user_id = auth()->user()->id ?? '';
-        $events = Event::where('status', 'accepted');
+        $events = Event::with('categories')->where('status', 'accepted');
         if($user_id){
            $events= $events->whereNot('created_by', $user_id);
         }
@@ -32,21 +34,17 @@ class WelcomeController extends Controller
     
     
 
-//     public function searchByCategory(Request $request)
-// {
-//     // Retrieve all categories
-//     $categories = Categories::all();
-
-//     // Get the selected category ID from the request
-//     $categoryId = $request->input('category_id');
-
-//     // Retrieve events by the selected category ID
-//     $events = Event::where('category_id', $categoryId)
-//                 ->where('status', 'accepted')
-//                 ->paginate(6);
-
-//     return view('welcome', compact('events', 'categories'));
-// }
+    public function searchByCategory(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+    
+        $events = Event::where('category_id', $categoryId)
+                    ->where('status', 'accepted')
+                    ->paginate(6);
+    
+        return response()->json($events);
+    }
+    
 
     public function searchByTitle(Request $request)
     {
@@ -71,5 +69,14 @@ class WelcomeController extends Controller
         return view('singelpageEvent', compact('event'));
     }
     
+    public function myReservations()
+    {
+        // Retrieve reservations for the currently authenticated user
+        $userId = Auth::id();
+        $reservations = Reservation::where('user_id', $userId)->get();
+
+        // Pass reservations to the view
+        return view('myreservation', compact('reservations'));
+    }
 
 }

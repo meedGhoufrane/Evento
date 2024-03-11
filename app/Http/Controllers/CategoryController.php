@@ -33,7 +33,7 @@ class CategoryController extends Controller
     
     public function show($id)
     {
-        $category = Category::find($id);
+        $category = Categories::find($id);
         if (!$category) {
             return redirect()->route('category.index')->with('error', 'Category not found.');
         }

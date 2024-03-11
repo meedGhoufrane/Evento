@@ -245,4 +245,6 @@ public function updateStatusreservation(Request $request, string $id)
 
     return redirect()->back()->with('success', 'Status updated successfully');
 }
+
+
 }

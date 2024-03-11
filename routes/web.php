@@ -138,7 +138,6 @@ Route::put('admin/events/{id}/updateStatusreservation', [EventController::class,
 
 
 // Route for searching events by category
-Route::get('/searchByCategory', [WelcomeController::class, 'searchByCategory'])->name('searchByCategory');
 
 Route::get('/search', [WelcomeController::class, 'searchByTitle'])->name('searchByTitle');
 
@@ -150,6 +149,13 @@ Route::get('accept-reservation', [EventController::class, 'acceptReservation'])-
 
 
 Route::get('/event/{id}', [WelcomeController::class, 'show'])->name('event.show');
+
+Route::get('/searchByCategory', [EventController::class, 'searchByCategory'])->name('searchByCategory');
+Route::post('/searchByCategory', [EventController::class, 'searchByCategory'])->name('searchByCategory');
+
+
+Route::get('/my-reservations', [WelcomeController::class, 'myReservations'])->name('myReservations');
+
 
 
 require __DIR__.'/auth.php';

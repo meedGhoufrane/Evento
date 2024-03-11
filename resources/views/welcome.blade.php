@@ -29,11 +29,14 @@
             </form>
 
 
-            <!-- Category Dropdown -->
-            {{-- <form action="{{ route('searchByCategory') }}" method="POST">
+            <form id="searchByCategoryForm">
                 @csrf
                 <div class="relative">
-                    <select name="category_id" class="appearance-none border border-gray-300 rounded-md py-2 pl-4 pr-10">
+                    <button type="button" id="searchButton" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
+                        Search
+                    </button>
+                    <select name="category_id" id="categoryId"
+                        class="appearance-none border border-gray-300 rounded-md py-2 pl-4 pr-10">
                         <option value="" selected disabled>Select category</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -47,10 +50,9 @@
                         </svg>
                     </div>
                 </div>
-                <button type="submit" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
-                    Search
-                </button>
-            </form> --}}
+            </form>
+
+
 
 
 
@@ -102,20 +104,22 @@
                     <img src="{{ asset('image/valorant_3204973b.jpg') }}" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <h2 class="text-xl font-semibold">{{ $event->title }}</h2>
-                        <p class="text-gray-600 mt-2">{{ $event->description }}</p>
+                        <div class="mt-2">
+                            <p class="text-gray-600 font-semibold">Categories:</p>
+                            @if ($event->categories)
+                                @foreach ($event->categories as $category)
+                                    <span
+                                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ $category->name }}</span>
+                                @endforeach
+                            @else
+                                <span class="text-gray-600">No categories</span>
+                            @endif
+                        </div>
                         <div class="mt-4 flex justify-between items-center">
-                            <p class="text-gray-500">{{ $event->date }}</p>
                             <a href="{{ route('event.show', $event->id) }}"
                                 class="px-4 py-2 bg-blue-500 text-white rounded-md">View Details</a>
 
-                            <form action="{{ route('reservEvent') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="event_id" value="{{ $event->id }}">
-                                <button type="submit"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Reserve
-                                </button>
-                            </form>
+
                         </div>
                     </div>
                 </div>
