@@ -1,6 +1,8 @@
 <x-index-layout>
     @include('includes.header')
 
+
+
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide" style="background-image: url('{{ asset('image/valorant.webp') }}')"></div>
@@ -13,9 +15,10 @@
         <!-- Search Input and Category Dropdown -->
         <div class="flex items-center justify-between mb-8">
             <!-- Search Input -->
-            <form action="{{ route('searchByTitle') }}" method="GET">
+            <form id="searchForm" action="{{ route('searchByTitle') }}" method="GET">
                 <div class="flex border border-gray-300 rounded-md">
-                    <input type="text" name="search_query" class="py-2 px-4 w-full" placeholder="Search events...">
+                    <input type="text" name="search_query" id="searchQuery" class="py-2 px-4 w-full"
+                        placeholder="Search events...">
                     <button type="submit" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
                         <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path
@@ -24,6 +27,8 @@
                     </button>
                 </div>
             </form>
+
+
             <!-- Category Dropdown -->
             {{-- <form action="{{ route('searchByCategory') }}" method="POST">
                 @csrf
@@ -52,6 +57,35 @@
         </div>
 
         <h1 class="text-3xl font-bold mb-4">All Events</h1>
+
+        {{-- @if ($errors->any())
+
+            <div id="alert-2"
+                class="lg:m-10   flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                role="alert">
+                <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ms-3 text-sm font-medium">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </div>
+                <button type="button"
+                    class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                    data-dismiss-target="#alert-2" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
+            </div>
+        @endif --}}
         {{-- @if ($noEventsFound)
             <p class="text-red-500 font-semibold">No events found Try search for events </p>
         @else --}}
@@ -64,17 +98,17 @@
             <!-- Loop through events and display each event card -->
 
             @foreach ($events as $event)
-                <div class="bg-white rounded-lg overflow-hidden shadow-md">
+                <div id="eventList" class="bg-white rounded-lg overflow-hidden shadow-md">
                     <img src="{{ asset('image/valorant_3204973b.jpg') }}" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <h2 class="text-xl font-semibold">{{ $event->title }}</h2>
                         <p class="text-gray-600 mt-2">{{ $event->description }}</p>
                         <div class="mt-4 flex justify-between items-center">
                             <p class="text-gray-500">{{ $event->date }}</p>
-                            <a href="{{ route('events.show', $event->id) }}"
+                            <a href="{{ route('event.show', $event->id) }}"
                                 class="px-4 py-2 bg-blue-500 text-white rounded-md">View Details</a>
 
-                            <form action="{{route('reservEvent')}}" method="POST">
+                            <form action="{{ route('reservEvent') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="event_id" value="{{ $event->id }}">
                                 <button type="submit"
@@ -82,7 +116,6 @@
                                     Reserve
                                 </button>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -106,63 +139,21 @@
 
     @include('includes.footer')
 
-    {{-- <script>
-        $(document).ready(function() {
-            var currentPage = 1;
-            var eventsPerPage = 6;
-            var totalEvents = {!! json_encode($events->count()) !!};
-            var totalPages = Math.ceil(totalEvents / eventsPerPage);
-            var eventsData = {!! json_encode($events) !!};
 
-            loadEvents(currentPage);
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            let searchQuery = document.getElementById('searchQuery').value;
 
-            function loadEvents(page) {
-                var startIndex = (page - 1) * eventsPerPage;
-                var endIndex = startIndex + eventsPerPage;
-                var eventsOnPage = eventsData.slice(startIndex, endIndex);
-
-                $('#eventsContainer').empty();
-
-                eventsOnPage.forEach(function(event) {
-                    var eventCard = `
-                        <div class="bg-white rounded-lg overflow-hidden shadow-md">
-                            <img src="${event.image}" class="w-full h-40 object-cover">
-                            <div class="p-4">
-                                <h2 class="text-xl font-semibold">${event.title}</h2>
-                                <p class="text-gray-600 mt-2">${event.description}</p>
-                                <div class="mt-4 flex justify-between items-center">
-                                    <p class="text-gray-500">${event.date}</p>
-                                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md">View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    $('#eventsContainer').append(eventCard);
-                });
-            }
-
-            $('#prevPageBtn').click(function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    loadEvents(currentPage);
-                    $('#nextPageBtn').prop('disabled', false);
-                    if (currentPage === 1) {
-                        $(this).prop('disabled', true);
-                    }
-                }
-            });
-
-            $('#nextPageBtn').click(function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    loadEvents(currentPage);
-                    $('#prevPageBtn').prop('disabled', false);
-                    if (currentPage === totalPages) {
-                        $(this).prop('disabled', true);
-                    }
-                }
-            });
+            // Make AJAX request
+            fetch('{{ route('searchByTitle') }}?search_query=' + encodeURIComponent(searchQuery))
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('eventsContainer').innerHTML =
+                        html; // Update the content of the event list
+                })
+                .catch(error => console.error('Error:', error));
         });
-    </script> --}}
+    </script>
 
 </x-index-layout>

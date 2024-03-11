@@ -53,19 +53,19 @@ class WelcomeController extends Controller
         $searchQuery = $request->input('search_query');
 
         $events = Event::where('title', 'like', "%{$searchQuery}%")
-                       ->where('status', 'accepted')
-                       ->paginate(6);
-
+        -> where('status', 'accepted')
+                       ->get();
+                    
         $noEventsFound = $events->isEmpty();
 
-        return view('welcome', compact('events', 'noEventsFound'));
+        return view('search', compact('events', 'noEventsFound'));
     }
     
 
     public function show($id)
     {
         // Retrieve the event by its ID
-        $event = Event::findOrFail($id);
+        $event = Event::with("categories")->findOrFail($id);
     
         // Return the view with the event details
         return view('singelpageEvent', compact('event'));

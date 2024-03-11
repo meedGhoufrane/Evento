@@ -131,20 +131,25 @@ Route::get('/admin/allevents', [EventController::class, 'allEvents'])->name('eve
 // Route for updating event status
 Route::put('admin/events/{id}/updateStatus', [EventController::class, 'updateStatus'])->name('events.updateStatus');
 
+// Route for updating reservation status
+Route::put('admin/events/{id}/updateStatusreservation', [EventController::class, 'updateStatusreservation'])->name('events.updateStatusreservation');
+
 
 
 
 // Route for searching events by category
 Route::get('/searchByCategory', [WelcomeController::class, 'searchByCategory'])->name('searchByCategory');
+
 Route::get('/search', [WelcomeController::class, 'searchByTitle'])->name('searchByTitle');
 
 
 Route::post('/event/reserve', [EventController::class, 'reservEvent'])->name('reservEvent');
 
 
+Route::get('accept-reservation', [EventController::class, 'acceptReservation'])->name('acceptReservation');
 
 
-Route::get('/events/{id}', [WelcomeController::class, 'show'])->name('events.show');
+Route::get('/event/{id}', [WelcomeController::class, 'show'])->name('event.show');
 
 
 require __DIR__.'/auth.php';

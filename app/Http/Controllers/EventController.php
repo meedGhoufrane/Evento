@@ -8,7 +8,11 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Reservation;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class EventController extends Controller
 {
@@ -132,9 +136,6 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, Event $event)
     {
          
-
-
-
         $data = [
             'title' => $request->title,
             'description' => $request->description,
@@ -196,21 +197,52 @@ class EventController extends Controller
     public function reservEvent(Request $request){
 
         $user_id = auth()->user()->id;
+        $user_name = auth()->user()->name;
         $event_id = $request->event_id;
-        $type = Event::find($event_id)->type;
+        $event = Event::find($event_id);
 
-        Reservation::create([
+        //  $reservation = Reservation::where('user_id',$user_id);
+        //  if($reservation)return redirect()->back(); 
+
+          Reservation::create([
             'user_id' => $user_id,
             'event_id' => $event_id,
-            'status' => $type === 'automatic' ? 'approved' : 'pending'
+            'status' => $event->type === 'automatic' ? 'approved' : 'pending'
         ]);
 
-        $message = $type === 'automatic' ? 'reservation is successfully' : 'wait for organazer to accepted';
-        return redirect()->route('events')->with('success',$message );
+        $data = ['user_name' =>$user_name , 'event' => $event->title];
 
+        $message = 'wait for organazer to accepted';
+        if($event->type === 'automatic'){
+            
+            $pdf = Pdf::loadView('pdf', $data );
+            
 
-        
+            return $pdf->download('invoice.pdf');
+
+            
+        }
+       
+        return redirect()->route('home')->with('success',$message );
 
     }
 
+    public function acceptReservation()
+{
+    $reservations = Reservation::all();
+    
+    return view('admin/events/acceptReservation', compact('reservations'));
+}
+
+public function updateStatusreservation(Request $request, string $id)
+{
+    // dd($request);
+    // $status = $request->validate([
+    //     'status' => ['required', 'in:pending,accepted,refused'],
+    // ]);
+        $reservations = Reservation::findOrFail($id);
+    $reservations->update(['status' => $request->status]);
+
+    return redirect()->back()->with('success', 'Status updated successfully');
+}
 }
