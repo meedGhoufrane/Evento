@@ -31,9 +31,7 @@
 
 
             <div class="relative">
-                <button type="button" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
-                    Search
-                </button>
+                
                 <select name="category_id" id="categories"
                     class="appearance-none border border-gray-300 rounded-md py-2 pl-4 pr-10">
                     <option value="" selected disabled>Select category</option>
