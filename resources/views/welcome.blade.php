@@ -119,7 +119,6 @@
                             <a href="{{ route('event.show', $event->id) }}"
                                 class="px-4 py-2 bg-blue-500 text-white rounded-md">View Details</a>
 
-
                         </div>
                     </div>
                 </div>

@@ -33,16 +33,27 @@ class WelcomeController extends Controller
     }
     
     
-
-    public function searchByCategory(Request $request)
+    public function search(Request $request)
     {
-        $categoryId = $request->input('category_id');
-    
-        $events = Event::where('category_id', $categoryId)
-                    ->where('status', 'accepted')
-                    ->paginate(6);
-    
-        return response()->json($events);
+        $name = $request->input('name');
+        $category = $request->input('category');
+
+        $query = Event::whereNotIn('status', ['refused', 'pending'])
+            ->orderBy('created_at', 'desc');
+
+        if ($name) {
+            $query->where('title', 'like', "%$name%");
+        }
+
+        if ($category) {
+            $query->whereHas('Categories', function ($q) use ($category) {
+                $q->where('name', $category);
+            });
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
     }
     
 
