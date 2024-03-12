@@ -26,7 +26,7 @@ class Event extends Model
     protected $dates = ['deleted_at'];
 
     public function Categories(){
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Categories::class,'category_id');
     }
 
     public function user()

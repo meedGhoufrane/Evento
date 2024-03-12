@@ -15,42 +15,43 @@
         <!-- Search Input and Category Dropdown -->
         <div class="flex items-center justify-between mb-8">
             <!-- Search Input -->
-            <form id="searchForm" action="{{ route('searchByTitle') }}" method="GET">
-                <div class="flex border border-gray-300 rounded-md">
-                    <input type="text" name="search_query" id="searchQuery" class="py-2 px-4 w-full"
-                        placeholder="Search events...">
-                    <button type="submit" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
-                        <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path
-                                d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-                        </svg>
-                    </button>
-                </div>
-            </form>
+
+            <div class="flex border border-gray-300 rounded-md">
+                <input type="text" name="search_query" id="search" class="py-2 px-4 w-full"
+                    placeholder="Search events...">
+                <button type="submit" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
+                    <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path
+                            d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                    </svg>
+                </button>
+            </div>
 
 
-            <form id="searchByCategoryForm">
-                @csrf
-                <div class="relative">
-                    <button type="button" id="searchButton" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
-                        Search
-                    </button>
-                    <select name="category_id" id="categoryId"
-                        class="appearance-none border border-gray-300 rounded-md py-2 pl-4 pr-10">
-                        <option value="" selected disabled>Select category</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                        <svg class="w-4 h-4 fill-current text-gray-600" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M6.293 7.707a1 1 0 0 1 1.414-1.414l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L8.586 11H3a1 1 0 1 1 0-2h5.586L6.293 7.707z" />
-                        </svg>
-                    </div>
+
+
+            <div class="relative">
+                <button type="button" class="bg-blue-500 text-white rounded-l-none px-4 py-2">
+                    Search
+                </button>
+                <select name="category_id" id="categories"
+                    class="appearance-none border border-gray-300 rounded-md py-2 pl-4 pr-10">
+                    <option value="" selected disabled>Select category</option>
+                    <option value="" selected>all</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 fill-current text-gray-600" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M6.293 7.707a1 1 0 0 1 1.414-1.414l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L8.586 11H3a1 1 0 1 1 0-2h5.586L6.293 7.707z" />
+                    </svg>
                 </div>
-            </form>
+            </div>
+
+
 
 
 
@@ -106,14 +107,10 @@
                         <h2 class="text-xl font-semibold">{{ $event->title }}</h2>
                         <div class="mt-2">
                             <p class="text-gray-600 font-semibold">Categories:</p>
-                            @if ($event->categories)
-                                @foreach ($event->categories as $category)
-                                    <span
-                                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ $category->name }}</span>
-                                @endforeach
-                            @else
-                                <span class="text-gray-600">No categories</span>
-                            @endif
+
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ $event->categories->name }}</span>
+
                         </div>
                         <div class="mt-4 flex justify-between items-center">
                             <a href="{{ route('event.show', $event->id) }}"
@@ -141,22 +138,41 @@
 
 
     @include('includes.footer')
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        document.getElementById('searchForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            let searchQuery = document.getElementById('searchQuery').value;
+        $(document).ready(function() {
+            var categorySelect = document.getElementById('categories');
+            categorySelect.addEventListener('change', searchAndFilter);
 
-            // Make AJAX request
-            fetch('{{ route('searchByTitle') }}?search_query=' + encodeURIComponent(searchQuery))
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('eventsContainer').innerHTML =
-                        html; // Update the content of the event list
-                })
-                .catch(error => console.error('Error:', error));
+            $('#search').keyup(function() {
+                searchAndFilter();
+            });
         });
+
+
+        function searchAndFilter() {
+
+
+            $.ajax({
+                url: "{{ route('search') }}",
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    search: $('#search').val(),
+                    categories: $('#categories').val()
+                },
+                success: function(data) {
+                    $('#eventsContainer').html(data);
+                }
+            });
+        }
     </script>
+
+
 
 </x-index-layout>

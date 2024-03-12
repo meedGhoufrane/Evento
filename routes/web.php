@@ -156,7 +156,8 @@ Route::post('/searchByCategory', [EventController::class, 'searchByCategory'])->
 
 Route::get('/my-reservations', [WelcomeController::class, 'myReservations'])->name('myReservations');
 
-Route::post('/search/events', [WelcomeController::class, 'search'])->name('search.events');
+
+Route::post('/search', [EventController::class, 'filter'])->name('search');
 
 
 

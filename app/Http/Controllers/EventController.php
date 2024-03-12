@@ -76,7 +76,7 @@ class EventController extends Controller
             $file->move($path, $imageFileName);
         }
 
-        $event = Event::create([
+             Event::create([
             'title' => $request->title,
             'description' => $request->description,
             'location' => $request->location,
@@ -229,18 +229,32 @@ class EventController extends Controller
 
     public function acceptReservation()
 {
-    $reservations = Reservation::all();
+    $reservations = Reservation::whereIn('event_id',auth()->user()->events()->pluck('id'))->get();
     
     return view('admin/events/acceptReservation', compact('reservations'));
+}
+public function filter(Request $request)
+{
+  
+    $category = $request->categories;
+    $search = $request->search;
+    $query = Event::query();
+
+    if ($search) {
+        $query->where('title','like',"%$search%");
+    }
+    if ($category && !empty($category)) {
+        $query->where('category_id',$category);
+    }
+    $events = $query->get();
+    return view('test.search',compact('events'));
 }
 
 public function updateStatusreservation(Request $request, string $id)
 {
     // dd($request);
-    // $status = $request->validate([
-    //     'status' => ['required', 'in:pending,accepted,refused'],
-    // ]);
-        $reservations = Reservation::findOrFail($id);
+   
+    $reservations = Reservation::findOrFail($id);
     $reservations->update(['status' => $request->status]);
 
     return redirect()->back()->with('success', 'Status updated successfully');

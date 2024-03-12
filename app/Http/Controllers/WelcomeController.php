@@ -31,30 +31,7 @@ class WelcomeController extends Controller
     
         return view('welcome', compact('events', 'categories'));
     }
-    
-    
-    public function search(Request $request)
-    {
-        $name = $request->input('name');
-        $category = $request->input('category');
 
-        $query = Event::whereNotIn('status', ['refused', 'pending'])
-            ->orderBy('created_at', 'desc');
-
-        if ($name) {
-            $query->where('title', 'like', "%$name%");
-        }
-
-        if ($category) {
-            $query->whereHas('Categories', function ($q) use ($category) {
-                $q->where('name', $category);
-            });
-        }
-
-        $results = $query->get();
-
-        return response()->json($results);
-    }
     
 
     public function searchByTitle(Request $request)
