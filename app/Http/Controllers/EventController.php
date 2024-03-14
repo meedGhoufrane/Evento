@@ -24,6 +24,7 @@ class EventController extends Controller
         $events = auth()->user()->events()->with('Categories')->latest()->paginate(6);
         $categories = Categories::all();
     
+            
         return view('admin.events.index', compact('events', 'categories'));
     }
     

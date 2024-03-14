@@ -145,8 +145,7 @@
                                         </button>
                                     </form>
                                     {{-- {{ route('reservations.index', $event->id) }} --}}
-                                    <a href=""
-                                        class="font-medium text-yellow-600 dark:text-yellow-500 hover:underline">Reservations</a>
+                                  
 
                                 </td>
                             </tr>
